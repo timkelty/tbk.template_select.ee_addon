@@ -9,7 +9,7 @@ Example:
 
 Or try passing embed variables using it in a matrix!
 
-	<code>{exp:weblog:entries weblog="pages" limit="1" status="not closed"}
+	<pre><code>{exp:weblog:entries weblog="pages" limit="1" status="not closed"}
 	  {cf_pages_body}
 			{cf_pages_embed_after}
 				{embed="{template}" {field_name}="{field_value}"}
