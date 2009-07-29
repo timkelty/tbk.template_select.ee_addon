@@ -1,3 +1,8 @@
+It would be nice if we included as the field settings a template multiselect that limited the option of the dropdown...*fork away people*!
+
+In tandem with that, it would be nice to have an extension that added a @template_name@ column to the templates table.
+Then if present, you could display that instead of @template_group/template@
+
 Useful for on-demand embedding within page entries.
 
 Example:
