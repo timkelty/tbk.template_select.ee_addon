@@ -1,13 +1,12 @@
 h1. Template Select for FieldFrame
 
-It would be nice if we included as the field settings a template multiselect that limited the option of the dropdown...*fork away people*!
+It would be nice if we included as the field settings a template multiselect that limited the option of the dropdown..._you know you wanna fork it..._!
 
-In tandem with that, it would be nice to have an extension that added a @template_name@ column to the templates table.
-Then if present, you could display that instead of @template_group/template@
+In tandem with that, it would be nice to have an extension that added a @template_name@ column to the templates table. Then if present, you could display that instead of @template_group/template@.
 
 Useful for on-demand embedding within page entries.
 
-h2. Example:
+h2. Examples
 
 <pre><code>
 {exp:weblog:entries weblog="pages" limit="1" status="not closed"}
@@ -16,7 +15,7 @@ h2. Example:
 {/exp:weblog:entries}
 </code></pre>
 
-h2. Or try passing embed variables using it in a matrix!
+h3. Or try passing embed variables using it in a matrix!
 
 <pre><code>
 {exp:weblog:entries weblog="pages" limit="1" status="not closed"}
