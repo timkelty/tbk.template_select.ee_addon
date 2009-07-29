@@ -1,0 +1,31 @@
+Useful for on-demand embedding within page entries.
+
+Example:
+
+ <pre><code>
+	{exp:weblog:entries
+	  weblog="pages"
+	  limit="1"
+	  status="not closed"
+	  }
+	  {cf_pages_body}
+	  {if cf_pages_embed_after}{embed="{cf_pages_embed_after}"}{/if}
+	{/exp:weblog:entries}
+ </code></pre>
+
+Or try passing embed variables using it in a matrix!
+
+<pre><code>
+	{exp:weblog:entries
+	  weblog="pages"
+	  limit="1"
+	  status="not closed"
+	  }
+	  {cf_pages_body}
+	  {if cf_pages_embed_after}
+			{cf_pages_embed_after}
+				{embed="{template}" {field_name}="{field_value}"}
+			{/cf_pages_embed_after}
+		{/if}
+	{/exp:weblog:entries}
+</code></pre>
