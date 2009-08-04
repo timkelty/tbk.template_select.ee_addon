@@ -18,13 +18,78 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
 		'no_lang'  => TRUE
 	);
 
-	var $default_field_settings = array(
-		'label' => ''
-	);
+var $default_field_settings = array(
+	'templates' => array()
+);
 
-	var $default_cell_settings = array(
-		'label' => ''
-	);
+var $default_cell_settings = array(
+	'templates' => array(),
+);
+
+/**
+ * Template Groups Multi-select
+ *
+ * @return string  multi-select HTML
+ * @access private
+ */
+function _templates_select($selected_templates)
+{
+	global $PREFS, $FFSD, $DSP, $DB;
+
+	// Is MSM enabled?
+	$msm = ($PREFS->ini('multiple_sites_enabled') == 'y');
+
+	// Get the current Site ID
+	$site_id = $PREFS->ini('site_id');
+
+	$r = $DSP->qdiv('defaultBold', 'Template Groups');
+  
+	$sql = "SELECT tg.group_name, t.template_id, t.template_name
+				FROM   exp_template_groups tg, exp_templates t
+				WHERE  tg.group_id = t.group_id
+			  AND    tg.site_id = '".$site_id."' ";
+	if (USER_BLOG == TRUE)
+	{
+		$sql .= "AND tg.group_id = '".$SESS->userdata['tmpl_group_id']."' ";
+	}
+	else
+	{
+		$sql .= "AND tg.is_user_blog = 'n' ";
+	}
+			
+	$templates = $DB->query($sql." ORDER BY tg.group_name, t.template_name");
+	
+	if ($templates->num_rows)
+	{
+		$r .= $DSP->input_select_header('templates[]', 'y', ($templates->num_rows < 15 ? $templates->num_rows : 15), 'auto');
+
+		if ($msm) $current_site_label = '';
+
+		foreach($templates->result as $template)
+		{
+			if ($msm AND $template['site_label'] != $current_site_label)
+			{
+				if ($current_site_label) $r .= '</optgroup>';
+				$r .= '<optgroup label="'.$template['site_label'].'">';
+				$current_site_label = $template['site_label'];
+			}
+
+			$selected = in_array($template['template_id'], $selected_templates) ? 1 : 0;
+			$r .= $DSP->input_select_option($template['group_name'] . '/' . $template['template_name'], $template['group_name'] . '/' . $template['template_name'], $selected);
+		}
+
+		if ($msm) $r .= '</optgroup>';
+
+		$r .= $DSP->input_select_footer();
+	}
+	else
+	{
+		$r .= $DSP->qdiv('highlight', 'No Templates Exist');
+	}
+
+	return $r;
+}
+
 
 	/**
 	 * Display Field Settings
@@ -34,19 +99,33 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
 	 */
 	function display_field_settings($field_settings)
 	{
-		global $DSP;
+		global $FFSD;
 
+		// initialize Fieldframe_SettingsDisplay
+		if ( ! isset($FFSD))
+		{
+			$FFSD = new Fieldframe_SettingsDisplay();
+		}
+
+		return array(
+			'cell2' => $this->_templates_select($field_settings['templates']),
+		);
 	}
 
 	/**
-	 * Display Field Settings
+	 * Display Cell Settings
 	 * 
 	 * @param  array  $cell_settings  The cell's settings
-	 * @return string  Settings HTML
+	 * @return array  Settings HTML
 	 */
 	function display_cell_settings($cell_settings)
 	{
 		global $DSP;
+
+		$r = '<label class="itemWrapper">'
+		   .   $this->_templates_select($field_settings['templates'])
+		   . '</label>';
+		return $r;
 	}
 
 	/**
@@ -59,35 +138,16 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
 	 */
 	function display_field($field_name, $field_data, $field_settings)
 	{
-    global $DSP, $DB, $PREFS, $SESS;
-
-		$sql = "SELECT tg.group_name, t.template_id, t.template_name
-					FROM   exp_template_groups tg, exp_templates t
-					WHERE  tg.group_id = t.group_id
-					AND    tg.site_id = '".$DB->escape_str($PREFS->ini('site_id'))."' ";
-			 
-		if (USER_BLOG == TRUE)
+    global $FFSD;
+    
+		// initialize Fieldframe_SettingsDisplay
+		if ( ! isset($FFSD))
 		{
-			$sql .= "AND tg.group_id = '".$SESS->userdata['tmpl_group_id']."' ";
+			$FFSD = new Fieldframe_SettingsDisplay();
 		}
-		else
-		{
-			$sql .= "AND tg.is_user_blog = 'n' ";
-		}
-				
-		$tquery = $DB->query($sql." ORDER BY tg.group_name, t.template_name");
 
-
-    $r = $DSP->input_select_header($field_name);
-    $r .= $DSP->input_select_option('', 'Choose One...');
-    foreach ($tquery->result as $template){
-     $tpath = $template['group_name'] .'/' . $template['template_name'];
-     $r .= $DSP->input_select_option($tpath, $tpath, (($tpath == $field_data) ? 1 : ''));
-    }
-     
-    $r .= $DSP->input_select_footer();
-
-		return $r;
+		return $FFSD->select($field_name.'[]', $field_data, $field_settings['templates']);
+		
 	}
 
 	/**
