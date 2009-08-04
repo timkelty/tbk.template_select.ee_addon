@@ -14,7 +14,7 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
 	 */
 	var $info = array(
 		'name'     => 'Template Select',
-		'version'  => '1.0',
+		'version'  => '1.1',
 		'no_lang'  => TRUE
 	);
 
