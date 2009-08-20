@@ -6,7 +6,7 @@ In tandem with that, it would be nice to have an extension that added a @templat
 
 Useful for on-demand embedding within page entries.
 
-Big thanks to Brian Litzinger "http://github.com/tilzinger":tilzinger for fixing what I broke!
+Big thanks to Brian Litzinger (http://github.com/tilzinger) for fixing what I broke!
 
 h2. Examples
 
