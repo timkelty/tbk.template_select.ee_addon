@@ -42,7 +42,7 @@ function _templates_select($selected_templates)
 	// Get the current Site ID
 	$site_id = $PREFS->ini('site_id');
 
-	$r = $DSP->qdiv('defaultBold', 'Template Groups');
+	$r = $DSP->qdiv('defaultBold', 'Templates');
   
 	$sql = "SELECT tg.group_name, t.template_id, t.template_name
 				FROM   exp_template_groups tg, exp_templates t
@@ -91,6 +91,37 @@ function _templates_select($selected_templates)
 }
 
 
+	/* 
+	Added by Brian Litzinger 
+	*/
+	/**
+	 * Display Tag
+	 *
+	 * @param  array   $params          Name/value pairs from the opening tag
+	 * @param  string  $tagdata         Chunk of tagdata between field tag pairs
+	 * @param  string  $field_data      Currently saved field value
+	 * @param  array   $field_settings  The field's settings
+	 * @return string
+	 */
+	function display_tag($params, $tagdata, $field_data, $field_settings)
+	{
+		global $TMPL;
+		
+		$r = '';
+		
+		if($field_data) 
+		{
+			if( !is_array($field_data) and $field_data != '' ) {
+				$r = $field_data;
+			} elseif( $field_data[0] != '' ) {
+				$r = ( isset($field_data[0]) ) ? $field_data[0] : '';
+			}
+		}
+		
+		return $r;
+	}
+
+
 	/**
 	 * Display Field Settings
 	 * 
@@ -118,10 +149,10 @@ function _templates_select($selected_templates)
 	 * @param  array  $cell_settings  The cell's settings
 	 * @return array  Settings HTML
 	 */
-	function display_cell_settings($cell_settings)
+	function display_cell_settings($field_settings)
 	{
 		global $DSP;
-
+		
 		$r = '<label class="itemWrapper">'
 		   .   $this->_templates_select($field_settings['templates'])
 		   . '</label>';
@@ -138,16 +169,25 @@ function _templates_select($selected_templates)
 	 */
 	function display_field($field_name, $field_data, $field_settings)
 	{
-    global $FFSD;
-    
+    	global $FFSD;
+
 		// initialize Fieldframe_SettingsDisplay
 		if ( ! isset($FFSD))
 		{
 			$FFSD = new Fieldframe_SettingsDisplay();
 		}
-
-		return $FFSD->select($field_name.'[]', $field_data, $field_settings['templates']);
 		
+		/* 
+		Added by Brian Litzinger 
+		It was returning the array key, not the path to the template
+		*/
+		$new_settings[''] = '--';
+		foreach($field_settings['templates'] as $key => $value)
+		{
+			$new_settings[$value] = $value;
+		}
+		
+		return $FFSD->select($field_name.'[]', $field_data, $new_settings);
 	}
 
 	/**
