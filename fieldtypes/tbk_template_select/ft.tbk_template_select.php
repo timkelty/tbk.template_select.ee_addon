@@ -187,7 +187,7 @@ function _templates_select($selected_templates)
 			$new_settings[$value] = $value;
 		}
 		
-		return $FFSD->select($field_name.'[]', $field_data, $new_settings);
+		return $FFSD->select($field_name, $field_data, $new_settings);
 	}
 
 	/**
