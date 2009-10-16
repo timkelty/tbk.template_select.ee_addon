@@ -63,22 +63,11 @@ function _templates_select($selected_templates)
 	{
 		$r .= $DSP->input_select_header('templates[]', 'y', ($templates->num_rows < 15 ? $templates->num_rows : 15), 'auto');
 
-		if ($msm) $current_site_label = '';
-
 		foreach($templates->result as $template)
 		{
-			if ($msm AND $template['site_label'] != $current_site_label)
-			{
-				if ($current_site_label) $r .= '</optgroup>';
-				$r .= '<optgroup label="'.$template['site_label'].'">';
-				$current_site_label = $template['site_label'];
-			}
-
-			$selected = in_array($template['template_id'], $selected_templates) ? 1 : 0;
+			$selected = in_array($template['group_name'] . '/' . $template['template_name'], $selected_templates) ? 1 : 0;
 			$r .= $DSP->input_select_option($template['group_name'] . '/' . $template['template_name'], $template['group_name'] . '/' . $template['template_name'], $selected);
 		}
-
-		if ($msm) $r .= '</optgroup>';
 
 		$r .= $DSP->input_select_footer();
 	}
