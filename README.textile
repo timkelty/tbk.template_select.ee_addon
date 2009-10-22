@@ -1,23 +1,25 @@
 h1. Template Select for FieldFrame
 
--It would be nice if we included as the field settings a template multiselect that limited the option of the dropdown..._you know you wanna fork it_!- Added in v1.1
-
-In tandem with that, it would be nice to have an extension that added a @template_name@ column to the templates table. Then if present, you could display that instead of @template_group/template@.
-
 Useful for on-demand embedding within page entries.
 
-Big thanks to "Brian Litzinger":http://github.com/tilzinger for fixing what I broke!
+h2. Added in 1.2
+
+* *All Templates* checkbox to ignore selections and always display all templates
+* Can be required/unrequired (not supported if using in a matrix)
+* Language file, cleanup
+* *display_tag* for easier embeds 
 
 h2. Examples
 
+You can now create an embed out of your field like this:
+
 <pre><code>
-{exp:weblog:entries weblog="pages" limit="1" status="not closed"}
-	{cf_pages_body}
-	{if cf_pages_embed_after}{embed="{cf_pages_embed_after}"}{/if}
-{/exp:weblog:entries}
+{my_field_name embed="y" some_var_to_pass="foo" another_embed_var="bar"}
 </code></pre>
 
-h3. Or try passing embed variables using it in a matrix!
+or to return just the string of your *group/template*, do not include the @embed@ paramater.
+
+h3. Or try passing embed variables using it in a FF Matrix!
 
 <pre><code>
 {exp:weblog:entries weblog="pages" limit="1" status="not closed"}
@@ -27,3 +29,7 @@ h3. Or try passing embed variables using it in a matrix!
 	{/cf_pages_embed_after}
 {/exp:weblog:entries}
 </code></pre>
+
+h2. Thanks
+
+* Big thanks to "Brian Litzinger":http://github.com/tilzinger
