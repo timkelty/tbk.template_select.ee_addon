@@ -137,7 +137,7 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
   	
   	$r = '<label>'
          . $DSP->qdiv('itemWrapper defaultBold', $LANG->line('populate_with'))
-         . $this->_templates_select($cell_settings['templates'] , 'templates[]', 'y')
+         . $this->_templates_select($cell_settings['templates'] , 'templates[]', 'y', '')
          . '</label>'
          . '<div style="height: 5px;"></div>'
          . $DSP->input_checkbox('all_templates', 'y', $checked) . $LANG->line('all_templates')
