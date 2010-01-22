@@ -5,7 +5,7 @@ Useful for on-demand embedding within page entries.
 h2. Added in 1.2
 
 * *All Templates* checkbox to ignore selections and always display all templates
-* Can be required/unrequired (not supported if using in a matrix)
+* -Can be required/unrequired (not supported if using in a matrix)- Not anymore, not sure why...
 * Language file, cleanup
 * *display_tag* for easier embeds 
 

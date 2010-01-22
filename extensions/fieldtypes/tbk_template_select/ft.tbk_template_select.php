@@ -162,17 +162,18 @@ class Tbk_template_select extends Fieldframe_Fieldtype {
     // initialize Fieldframe_SettingsDisplay
   	$SD = new Fieldframe_SettingsDisplay();
   	
-  	$required = isset($FF->row['field_required']) ? $FF->row['field_required'] : null;
+    // $required = isset($FF->row['field_required']) ? $FF->row['field_required'] : null;
 		$r = ''; 
 		
 		if ($field_settings['all_templates'] == 'y') {
-		  $r .= $this->_templates_select($field_data, $field_name, '', $required);
+		  $r .= $this->_templates_select($field_data, $field_name, '', null);
 		}
 		else {
 		  if (!empty($field_settings['templates']))
     	{
     		$r .= $DSP->input_select_header($field_name, '', 1, 'auto');
-    		$r .= ($required != 'y') ? $DSP->input_select_option('', $this->site_settings['null_option']) : '';
+        // $r .= ($required != 'y') ? $DSP->input_select_option('', $this->site_settings['null_option']) : '';
+    		$r .= $DSP->input_select_option('', $this->site_settings['null_option']);
 
     		foreach($field_settings['templates'] as $template)
     		{
